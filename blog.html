@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — Cecilia Li</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="loader" aria-hidden="true"><span class="loader-mark">CL</span></div>
+  <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-bar"></div></div>
+
+  <nav aria-label="Primary">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo signature">Cecilia Li</a>
+      <div class="nav-center">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="blog.html" class="active">Blog</a></li>
+          <li><a href="index.html#volunteer">Volunteer</a></li>
+          <li><a href="index.html#beyond">Beyond</a></li>
+          <li class="nav-links-mobile-only"><a href="index.html#resume">Resume ↗</a></li>
+          <li class="nav-links-mobile-only"><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="nav-cta">
+          <a href="index.html#resume">Resume ↗</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">
+          <span class="icon-sun" aria-hidden="true">☀</span>
+          <span class="icon-moon" aria-hidden="true">☾</span>
+        </button>
+        <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <a href="index.html#blog" class="back-link">← Back to Home</a>
+      <p class="eyebrow">Blog</p>
+      <h1>Notes on what I'm learning</h1>
+      <p class="section-subtitle">
+        Short reflections from networking conversations, projects, and
+        coursework — written to think out loud, not to be polished essays.
+      </p>
+    </div>
+  </header>
+
+  <hr class="divider" />
+
+  <main id="main">
+  <section class="section">
+    <div class="container">
+      <!-- To add a new post: duplicate fidelity-hr-analytics.html, rename it, edit the
+           content, then copy one of these <a class="card"> blocks below and
+           point it at your new file. See GETTING-STARTED.md, Step 6. -->
+      <div class="card-grid">
+        <a href="fidelity-hr-analytics.html" class="blog-card reveal">
+          <div class="blog-card-bg" style="background-image: url('assets/photo-5.jpg');" role="img" aria-label="Sunlight reflecting on open water"></div>
+          <div class="blog-card-scrim"></div>
+          <div class="blog-card-content">
+            <p class="card-tag">July 2026</p>
+            <h3>What I Learned From<br />Fidelity's People Analytics Team</h3>
+            <span class="card-link">Read <span class="arrow">→</span></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Cecilia Li. Built with HTML &amp; CSS while learning.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>

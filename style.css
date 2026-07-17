@@ -1,0 +1,1865 @@
+/* ============================================================
+   Cecilia Li — Personal Site Stylesheet
+   ------------------------------------------------------------
+   Light/dark themeable, clean, professional. Organized in numbered
+   sections — search for "===== N." headers to jump around. Comments
+   explain the CSS concept each section demonstrates, since this is
+   also meant to be readable while you're learning.
+   ============================================================ */
+
+/* ===== 1. Fonts =====
+   Editorial pairing: Playfair Display for every heading (elegant,
+   magazine-style serif with real personality), Inter for body copy
+   (clean, easy to read at length), and Parisienne reserved only for
+   the "Cecilia Li" signature mark — never used for anything else, so
+   it stays special. */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,500;1,600&family=Parisienne&family=Inter:wght@400;500;600&display=swap');
+
+/* ===== 2. CSS Variables =====
+   Light theme is the default (:root). [data-theme="dark"] on <html>
+   (toggled by site.js) overrides the same variable names, which is
+   why nothing else in this file needs an "if dark mode" branch —
+   every rule below just reads var(--bg), var(--text-primary), etc.,
+   and gets whichever theme is active automatically. */
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f7f4f0;
+  --text-primary: #201c19;
+  --text-muted: #6b6459;
+  --accent: #a8501f;         /* darkened from the original terracotta to clear 4.5:1 contrast on white (AA for body text) */
+  --accent-soft: #fbede1;
+  --accent-2: #8a5a2b;
+  --border: #e7e0d7;
+  --max-width: 980px;
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* spacing scale — used by the newer sections below so spacing stays
+     consistent instead of every component inventing its own numbers */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+
+  --shadow-sm: 0 2px 8px rgba(32, 28, 25, 0.06);
+  --shadow-md: 0 14px 32px rgba(32, 28, 25, 0.12);
+  --shadow-lg: 0 24px 48px rgba(32, 28, 25, 0.16);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* dark "masthead" palette — the hero uses this regardless of the
+     site-wide light/dark toggle, since it's a photo backdrop rather
+     than plain text-on-background */
+  --hero-bg: #17130f;
+  --hero-bg-2: #221c16;
+  --hero-text: #f1e6d8;
+  --hero-text-muted: #c9baa6;
+  /* the hero's own accent, kept separate from --accent — --accent gets
+     darkened for AA contrast on a *light* background, which would be too
+     dim against the hero's dark photo backdrop, so the hero uses this
+     brighter version instead (verified 6.9:1+ against --hero-bg) */
+  --hero-accent: #e08a4f;
+
+  /* editorial color rhythm — a few sections break from the plain
+     light/dark theme entirely to create depth as you scroll, per the
+     "white / light gray / deep navy / white / warm beige / dark
+     footer" sequence. These are fixed values (not theme-swapped)
+     since they're meant to read as deliberate, cinematic beats
+     regardless of the light/dark toggle. */
+  --navy-bg: #0e1a2e;
+  --navy-bg-2: #16263f;
+  --navy-text: #f2ede1;
+  --navy-text-muted: #9fb0c9;
+  --beige-bg: #f4ead9;
+  --beige-border: #e6d7bd;
+  /* fixed dark text for the beige sections — --text-primary/--text-muted
+     flip to light colors in dark mode, which would be unreadable on a
+     background that (intentionally) never changes, so beige sections
+     pin their direct text to these instead */
+  --beige-text: #201c19;
+  --beige-text-muted: #6b6459;
+}
+
+[data-theme="dark"] {
+  --bg: #15120e;
+  --bg-alt: #1d1812;
+  --text-primary: #f2e9dd;
+  --text-muted: #ab9d8c;
+  --accent: #e08a4f;
+  --accent-soft: rgba(224, 138, 79, 0.14);
+  --accent-2: #d9a066;
+  --border: #332a20;
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 14px 32px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 24px 56px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== 3. Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 76px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, sans-serif;
+  line-height: 1.65;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* The signature mark — reserved exclusively for "Cecilia Li" as a
+   personal brand element (nav logo, hero name, footer). Never used
+   for body headings, so it stays a distinct, recognizable mark
+   rather than just another font choice. */
+.signature {
+  font-family: 'Parisienne', cursive;
+  font-weight: 400;
+  line-height: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Respect users who've asked their OS to minimize motion — this
+   overrides every transition/animation on the site down to
+   near-instant, which matters more than any visual flourish. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== 4. Accessibility: focus states =====
+   Browsers only show :focus-visible (not :focus) when the user is
+   actually navigating by keyboard, so mouse clicks don't get a ring
+   but Tab-ing through the page does. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+a.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 0 0 8px 0;
+  z-index: 200;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+a.skip-link:focus {
+  left: 0;
+}
+
+/* ===== 5. Layout container ===== */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===== 6. Loading screen =====
+   Real HTML present on page load (not JS-injected), so it shows
+   instantly with no flash of unstyled content. site.js adds
+   .loader-hidden once the page is ready. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--hero-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.45s var(--ease), visibility 0.45s var(--ease);
+}
+
+.loader-mark {
+  font-family: 'Parisienne', cursive;
+  font-weight: 400;
+  font-size: 2.6rem;
+  color: var(--hero-text);
+  animation: loaderPulse 0.6s var(--ease) forwards;
+}
+
+.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes loaderPulse {
+  from { opacity: 0; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== 7. Scroll progress bar ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 60;
+  background: transparent;
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+/* ===== 8. Nav bar ===== */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg); /* fallback for browsers without color-mix() */
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.nav-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.nav-logo {
+  font-family: 'Parisienne', cursive;
+  font-weight: 400;
+  font-size: 1.7rem;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  transition: color 0.2s var(--ease);
+}
+
+.nav-logo:hover {
+  color: var(--accent);
+}
+
+.nav-center {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+/* Plain text nav — no pills, no borders. A thin underline grows in
+   from the left on hover/active via a ::after pseudo-element instead
+   of background-color, which reads as far more editorial. */
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.nav-links a {
+  position: relative;
+  display: inline-block;
+  padding: 4px 0;
+  color: var(--text-muted);
+  transition: color 0.25s var(--ease);
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--text-primary);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.88rem;
+}
+
+.nav-cta a {
+  position: relative;
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+.nav-cta a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease);
+}
+
+.nav-cta a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* theme toggle button — a simple circular icon button */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease), border-color 0.18s var(--ease), background 0.18s var(--ease);
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: scale(1.08) rotate(-8deg);
+}
+
+.theme-toggle:active {
+  transform: scale(0.94);
+}
+
+.theme-toggle .icon-moon { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: inline; }
+
+/* mobile hamburger — hidden on desktop, shown under the breakpoint below */
+.nav-toggle {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+/* ===== 9. Hero section =====
+   Full-screen (100vh) cinematic opener — a real photo, not a resume
+   header. The background photo is oversized (120% height, offset up)
+   so site.js can translate it a few percent on scroll for a subtle
+   parallax effect without ever exposing an edge. The scrim is two
+   overlapping gradients: one that darkens toward the bottom edge (so
+   it settles into --hero-bg instead of ending on a hard photo edge),
+   and one that darkens toward the left (where the text sits) while
+   staying lighter on the right so the photo itself still reads. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  color: var(--hero-text);
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+}
+
+.hero-bg-photo {
+  position: absolute;
+  top: -15%;
+  left: 0;
+  right: 0;
+  height: 130%;
+  background-image: url('assets/photo-8.jpg');
+  background-size: cover;
+  background-position: center 60%;
+  z-index: 0;
+  will-change: transform;
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(14, 20, 30, 0.35) 0%, rgba(10, 15, 24, 0.55) 62%, rgba(8, 12, 20, 0.92) 100%),
+    linear-gradient(100deg, rgba(9, 13, 22, 0.82) 0%, rgba(9, 13, 22, 0.42) 42%, rgba(9, 13, 22, 0.1) 72%);
+}
+
+.hero .eyebrow {
+  color: var(--hero-accent);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 140px 0 100px;
+}
+
+.eyebrow {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+/* The big editorial headline — "Psychology. / Economics. / Analytics."
+   stacked, each line its own reveal so they cascade in with a small
+   stagger (see .reveal-d1/d2/d3 in the hero markup). */
+.hero-headline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-style: italic;
+  font-size: clamp(2.6rem, 7.5vw, 5.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--hero-text);
+  margin-bottom: 8px;
+}
+
+.hero-headline-word {
+  display: block;
+}
+
+/* The signature mark — "Cecilia Li" in script, revealed with a
+   left-to-right clip-path wipe (site.js adds .signature-write once
+   the loader hides) so it reads like it's being written by hand. */
+.hero-signature-name {
+  font-size: clamp(2.8rem, 8vw, 5.2rem);
+  color: var(--hero-accent);
+  margin: 6px 0 28px;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s;
+}
+
+.hero-signature-name.signature-write {
+  clip-path: inset(0 0 0 0);
+}
+
+.hero-content .intro {
+  color: var(--hero-text-muted);
+  max-width: 54ch;
+  font-size: 1.08rem;
+  margin-bottom: 12px;
+}
+
+.meta-line {
+  color: var(--hero-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 26px;
+}
+
+.hero .btn {
+  color: var(--hero-text);
+  border-color: rgba(241, 230, 216, 0.3);
+}
+
+.hero .btn:hover {
+  background: rgba(241, 230, 216, 0.1);
+  border-color: var(--accent);
+}
+
+.hero .btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.hero .btn-primary:hover {
+  background: #a14f24;
+  border-color: #a14f24;
+}
+
+/* A small breathing scroll cue at the bottom center — a thin line
+   that gently pulses downward, inviting the first scroll. */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 1px;
+  height: 46px;
+  overflow: hidden;
+}
+
+.hero-scroll-cue span {
+  display: block;
+  width: 1px;
+  height: 100%;
+  background: var(--hero-text-muted);
+  animation: scrollCue 2.2s var(--ease) infinite;
+}
+
+@keyframes scrollCue {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(100%); }
+}
+
+/* ===== 10. Buttons ===== */
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform 0.18s var(--ease), border-color 0.18s var(--ease),
+    background 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  filter: brightness(0.92);
+}
+
+/* ===== 11. Section headings ===== */
+.section {
+  padding: var(--space-7) 0;
+  position: relative;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  margin-bottom: var(--space-6);
+  max-width: 62ch;
+}
+
+.section-alt {
+  background: var(--bg-alt);
+}
+
+/* ===== 11b. Color rhythm =====
+   Two extra beats layered into the white/light-gray alternation
+   (.section-alt) so the page has real depth while scrolling instead
+   of feeling flat: a deep navy break (used for Projects and Blog, to
+   make cards and cover images pop) and a warm beige break (used for
+   Volunteer and Resume, for a softer, more human feel). Fixed colors,
+   not theme-swapped — these are meant to read the same regardless of
+   the light/dark toggle. */
+.section-navy {
+  background: var(--navy-bg);
+}
+
+.section-navy .section-title {
+  color: var(--navy-text);
+}
+
+.section-navy .section-subtitle,
+.section-navy .muted-note {
+  color: var(--navy-text-muted);
+}
+
+.section-beige {
+  background: var(--beige-bg);
+}
+
+.section-beige .section-title {
+  color: var(--beige-text);
+}
+
+.section-beige .section-subtitle,
+.section-beige .muted-note,
+.section-beige .resume-fallback {
+  color: var(--beige-text-muted);
+}
+
+.muted-note {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 24px;
+}
+
+/* ===== 12. Decorative background shapes =====
+   Soft, blurred, low-opacity circles used behind a couple of
+   sections for texture. They're pure CSS (no images), sit at
+   z-index -1 or 0 with pointer-events: none, and every section that
+   uses one needs position: relative + its content wrapped so the
+   content's own z-index sits above it. */
+.bg-decor {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+[data-theme="dark"] .bg-decor {
+  opacity: 0.25;
+}
+
+.section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== 13. Reveal-on-scroll =====
+   Starts hidden + shifted down; site.js adds .in-view via
+   IntersectionObserver the first time each element scrolls into
+   view, which triggers this transition. */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-d1 { transition-delay: 0.08s; }
+.reveal-d2 { transition-delay: 0.16s; }
+.reveal-d3 { transition-delay: 0.24s; }
+.reveal-d4 { transition-delay: 0.32s; }
+
+/* ===== 14. Stats section ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-5);
+}
+
+.stat-block {
+  text-align: center;
+  padding: var(--space-4) var(--space-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
+}
+
+.stat-block:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--accent);
+}
+
+.stat-number {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+  color: var(--accent);
+}
+
+.stat-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* ===== 15. About section (two-column) ===== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.about-photo-frame {
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.about-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+
+.about-photo-frame:hover img {
+  transform: scale(1.04);
+}
+
+.about-copy p {
+  color: var(--text-muted);
+  max-width: 62ch;
+  margin-bottom: 14px;
+}
+
+.about-meta-line {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 18px;
+}
+
+/* ===== 16. Card grid (projects / blog) ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  transition: box-shadow 0.22s var(--ease), transform 0.22s var(--ease), border-color 0.22s var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px) scale(1.015);
+  border-color: var(--accent);
+}
+
+.card:active {
+  transform: translateY(-1px) scale(1);
+}
+
+.card-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.card-outcome {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: auto;
+  padding-top: 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.card-link .arrow {
+  transition: transform 0.2s var(--ease);
+  display: inline-block;
+}
+
+.card:hover .card-link .arrow {
+  transform: translateX(4px);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.tag {
+  font-size: 0.78rem;
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* ===== 16b. Blog cards =====
+   A cover photo with the title set directly over a dark scrim,
+   instead of a plain text card — same full-bleed-photo technique as
+   the Volunteer and Beyond sections. Hover: the photo zooms slightly,
+   the scrim deepens, and the "Read →" arrow nudges right — the three
+   effects the brief asked for (zoom / fade / overlay) in one card. */
+.blog-card {
+  position: relative;
+  display: block;
+  min-height: 360px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.blog-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.blog-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s var(--ease);
+}
+
+.blog-card:hover .blog-card-bg {
+  transform: scale(1.08);
+}
+
+.blog-card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(9, 13, 22, 0.92) 0%, rgba(9, 13, 22, 0.45) 55%, rgba(9, 13, 22, 0.05) 85%);
+  transition: background 0.3s var(--ease);
+}
+
+.blog-card:hover .blog-card-scrim {
+  background: linear-gradient(0deg, rgba(9, 13, 22, 0.96) 0%, rgba(9, 13, 22, 0.6) 55%, rgba(9, 13, 22, 0.15) 85%);
+}
+
+.blog-card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  padding: var(--space-5);
+  color: var(--navy-text);
+}
+
+.blog-card-content .card-tag {
+  color: var(--hero-accent);
+}
+
+.blog-card-content h3 {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--navy-text);
+  margin-bottom: 12px;
+}
+
+.blog-card-content .card-link {
+  color: var(--navy-text);
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* ===== 17. Project / detail page blocks ===== */
+.detail-block {
+  margin-bottom: 40px;
+}
+
+.detail-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-block p, .detail-block li {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.detail-block ul {
+  padding-left: 4px;
+  margin-top: 10px;
+}
+
+.detail-block li {
+  margin-bottom: 8px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.detail-block li::before {
+  content: "\2013";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ===== 17b. Blog post reading typography =====
+   Your edits (centered column, serif body text, taller line-height) —
+   scoped to .blog-article so they only apply to blog posts, not the
+   project case studies, which also reuse .detail-block and read better
+   in the sans-serif at full container width. Add class="blog-article"
+   to a post's <section> to opt in (see fidelity-hr-analytics.html). */
+.blog-article .detail-block {
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.blog-article .detail-block p,
+.blog-article .detail-block li {
+  line-height: 1.8;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.blog-article .detail-block p {
+  margin-bottom: 1.5rem;
+}
+
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.stat {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  min-width: 140px;
+}
+
+.stat .value {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat .label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+/* simple illustrative bar chart used on the wage-inequality page —
+   built entirely from divs, no chart library needed */
+.bar-chart {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar-chart-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 48px;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.bar-chart-track {
+  height: 10px;
+  background: var(--bg-alt);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.bar-chart-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 999px;
+}
+
+.chart-caption {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* ===== 18. Experience cards ===== */
+.exp-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  margin-bottom: 20px;
+  transition: box-shadow 0.22s var(--ease), transform 0.22s var(--ease), border-color 0.22s var(--ease);
+}
+
+.exp-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px) scale(1.01);
+  border-color: var(--accent);
+}
+
+.exp-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.exp-role {
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.exp-dates {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.exp-org {
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.exp-card ul {
+  padding-left: 4px;
+}
+
+.exp-card li {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.exp-card li::before {
+  content: "\2013";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* ===== 19. Timeline ===== */
+.timeline {
+  position: relative;
+  margin-top: 8px;
+  padding-left: 34px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: var(--space-5);
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--border);
+  transition: box-shadow 0.2s var(--ease);
+}
+
+.timeline-item:hover::before {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.timeline-year {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.timeline-desc {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* ===== 19b. Media placeholder =====
+   A reusable "drop your photo here" box — used for Volunteer photos and
+   the Photography grid until real images are added. Swap the parent
+   element's contents for an <img> and these rules mostly still apply
+   (aspect-ratio + border-radius carry over nicely to a real photo). */
+.media-placeholder {
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  border: 1.5px dashed var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.media-placeholder.small {
+  aspect-ratio: 1 / 1;
+  font-size: 0.7rem;
+  padding: 8px;
+}
+
+/* A real photo dropped into the same slot a .media-placeholder used to
+   occupy — same rounded corners, plus the gentle hover-zoom already
+   used on the Photography grid so it feels consistent. */
+.media-photo {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.media-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.media-photo:hover img {
+  transform: scale(1.05);
+}
+
+/* ===== 19c. Word-reveal animation =====
+   Used on the Volunteer titles — site.js splits the text into one
+   <span class="word"> per word, each starting hidden; when the parent
+   gets .in-view (same trigger as .reveal), the words fade/slide in with
+   a small stagger already set per-word via inline transition-delay. */
+.word-reveal .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.word-reveal.in-view .word {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== 19d. Volunteer section =====
+   Each entry is a photo used as a full-bleed background with a dark
+   gradient scrim (same technique as the hero) instead of a boxed
+   thumbnail — the text sits in the scrim's dark side. ".reverse" flips
+   which side is dark by flipping the gradient angle and pushing the
+   text box to the other edge with margin-left: auto. */
+.volunteer-feature {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  min-height: 420px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  isolation: isolate;
+}
+
+.volunteer-feature:last-child {
+  margin-bottom: 0;
+}
+
+.volunteer-feature-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.6s var(--ease);
+}
+
+.volunteer-feature:hover .volunteer-feature-bg {
+  transform: scale(1.04);
+}
+
+.volunteer-feature-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(23, 19, 15, 0.9) 0%, rgba(23, 19, 15, 0.55) 42%, rgba(23, 19, 15, 0.05) 78%);
+}
+
+.volunteer-feature.reverse .volunteer-feature-scrim {
+  background: linear-gradient(270deg, rgba(23, 19, 15, 0.9) 0%, rgba(23, 19, 15, 0.55) 42%, rgba(23, 19, 15, 0.05) 78%);
+}
+
+.volunteer-feature-content {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-6);
+  max-width: 520px;
+  color: var(--hero-text);
+}
+
+.volunteer-feature.reverse .volunteer-feature-content {
+  margin-left: auto;
+}
+
+.volunteer-feature-content .card-tag {
+  color: var(--hero-accent);
+}
+
+.volunteer-feature-content .exp-role {
+  color: var(--hero-text);
+  font-size: 1.15rem;
+}
+
+.volunteer-feature-content .exp-dates {
+  color: var(--hero-text-muted);
+}
+
+.volunteer-feature-content .exp-org {
+  color: var(--hero-accent);
+}
+
+.volunteer-feature-content ul {
+  margin-top: 12px;
+  padding-left: 4px;
+}
+
+.volunteer-feature-content li {
+  color: var(--hero-text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  padding-left: 18px;
+  position: relative;
+}
+
+.volunteer-feature-content li::before {
+  content: "\2013";
+  position: absolute;
+  left: 0;
+  color: var(--hero-accent);
+}
+
+/* Narrative prose replaces the old bullet list — a short story
+   instead of a resume entry. */
+.volunteer-story {
+  margin-top: 12px;
+  color: var(--hero-text-muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+/* ===== 19d. Beyond Analytics — full-width magazine cards =====
+   Music, Photography, and Travel each get their own full-bleed
+   feature (edge to edge, outside .container) instead of being boxed
+   into a two-column grid — much closer to a magazine spread than a
+   resume section. .beyond-feature is the shared Music/Travel treatment
+   (single background photo + scrim + copy); the Photography entry
+   uses the taller, rotating .photo-banner instead since it's meant to
+   be the most immersive of the three. */
+.beyond-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--space-6);
+}
+
+.beyond-feature {
+  position: relative;
+  min-height: 480px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.beyond-feature-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.7s var(--ease);
+}
+
+.beyond-feature:hover .beyond-feature-bg {
+  transform: scale(1.04);
+}
+
+.beyond-feature-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(9, 13, 22, 0.92) 0%, rgba(9, 13, 22, 0.55) 45%, rgba(9, 13, 22, 0.15) 75%);
+}
+
+.beyond-feature-content {
+  position: relative;
+  z-index: 2;
+  padding: var(--space-6) 24px;
+  max-width: 620px;
+  color: var(--navy-text);
+}
+
+.beyond-feature-content .card-tag {
+  color: var(--hero-accent);
+}
+
+.beyond-feature-content h3 {
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-style: italic;
+  margin: 6px 0 12px;
+  color: var(--navy-text);
+}
+
+.beyond-feature-content p {
+  color: var(--navy-text-muted);
+  max-width: 56ch;
+}
+
+/* ----- Photography — the rotating immersive banner ----- */
+.photo-banner {
+  position: relative;
+  min-height: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.photo-banner-bg {
+  position: absolute;
+  inset: -8% 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.4s var(--ease);
+}
+
+.photo-banner-bg.active {
+  opacity: 1;
+}
+
+.photo-banner-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(14, 26, 46, 0.55) 0%, rgba(14, 26, 46, 0.72) 100%);
+}
+
+.photo-banner-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--navy-text);
+  padding: var(--space-6) 24px;
+}
+
+.photo-banner-content .card-tag {
+  color: var(--hero-accent);
+  justify-content: center;
+  display: flex;
+}
+
+.photo-banner-title {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-style: italic;
+  margin: 10px 0 16px;
+  color: var(--navy-text);
+}
+
+.photo-banner-content p {
+  color: var(--navy-text-muted);
+  max-width: 52ch;
+  margin: 0 auto;
+}
+
+/* ===== 20. Skills section (icons + proficiency bars) ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6);
+}
+
+.skill-group h3 {
+  color: var(--accent);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.skill-item:last-child {
+  margin-bottom: 0;
+}
+
+.skill-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: -0.02em;
+}
+
+.skill-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.skill-name-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  margin-bottom: 5px;
+}
+
+.skill-name-row span:last-child {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.skill-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease);
+}
+
+.reveal.in-view .skill-bar-fill {
+  transform: scaleX(1);
+}
+
+/* ===== 21. Exploring chips ===== */
+.exploring-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.exploring-chip {
+  font-size: 0.92rem;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 500;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+.exploring-chip:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== 22. Resume section ===== */
+.resume-embed {
+  width: 100%;
+  height: 760px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+}
+
+.resume-fallback {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.resume-links-note {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin-top: 24px;
+  max-width: 62ch;
+}
+
+.resume-links-note a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ===== 23. Contact cards ===== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--space-5);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
+}
+
+.contact-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+
+.contact-card:active {
+  transform: translateY(-2px) scale(1);
+}
+
+.contact-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: transform 0.25s var(--ease);
+}
+
+.contact-card:hover .contact-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.contact-card h3 {
+  font-size: 1.02rem;
+}
+
+.contact-card p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.contact-card .card-link {
+  padding-top: 0;
+}
+
+/* ===== 24. Page header (project/blog subpages) ===== */
+.page-header {
+  padding: 64px 0 26px;
+}
+
+.back-link {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  transition: transform 0.18s var(--ease), color 0.18s var(--ease);
+}
+
+.back-link:hover {
+  color: var(--accent);
+  transform: translateX(-3px);
+}
+
+.page-header h1 {
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  margin-bottom: 12px;
+}
+
+.page-header .meta {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* ===== 25. Reflection / pull-quote text ===== */
+.reflection {
+  border-left: 3px solid var(--accent);
+  padding: 4px 0 4px 22px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 22px 0;
+}
+
+/* ===== 26. Footer =====
+   The final beat in the color rhythm — always dark, regardless of the
+   light/dark toggle, so the page ends on the same cinematic register
+   it opened on in the hero. */
+footer {
+  background: var(--navy-bg);
+  padding: 40px 0;
+  color: var(--navy-text-muted);
+  font-size: 0.88rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: var(--navy-text-muted);
+  transition: color 0.18s var(--ease);
+}
+
+.footer-links a:hover {
+  color: var(--hero-accent);
+}
+
+/* ===== 27. Section divider (subpages) ===== */
+hr.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* ===== 28. Responsive ===== */
+@media (max-width: 860px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-photo-frame {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .beyond-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+  .nav-cta {
+    display: none;
+  }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 10px 20px 16px;
+    display: none;
+    box-shadow: var(--shadow-md);
+  }
+  .nav-links.nav-links-open {
+    display: flex;
+  }
+  .nav-links a {
+    text-align: center;
+  }
+  .nav-links a::after {
+    display: none;
+  }
+  .nav-links-mobile-only {
+    display: list-item !important;
+    border-top: 1px solid var(--border);
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+}
+
+.nav-links-mobile-only {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .hero-content {
+    padding: 88px 0 56px;
+  }
+  .hero-scroll-cue {
+    display: none;
+  }
+  .volunteer-feature {
+    min-height: 320px;
+  }
+  .volunteer-feature-content,
+  .volunteer-feature.reverse .volunteer-feature-content {
+    max-width: 100%;
+    margin-left: 0;
+    padding: var(--space-4);
+  }
+  .beyond-feature {
+    min-height: 340px;
+  }
+  .beyond-feature-content {
+    padding: var(--space-4);
+  }
+  .photo-banner {
+    min-height: 400px;
+  }
+  .blog-card {
+    min-height: 300px;
+  }
+  .section {
+    padding: 40px 0;
+  }
+  .exp-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .resume-embed {
+    height: 420px;
+  }
+  .bar-chart-row {
+    grid-template-columns: 96px 1fr 40px;
+    font-size: 0.78rem;
+  }
+}

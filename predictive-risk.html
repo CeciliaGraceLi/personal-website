@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Predictive Risk Analytics — Cecilia Li</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="loader" aria-hidden="true"><span class="loader-mark">CL</span></div>
+  <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-bar"></div></div>
+
+  <nav aria-label="Primary">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo signature">Cecilia Li</a>
+      <div class="nav-center">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#projects" class="active">Projects</a></li>
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="index.html#blog">Blog</a></li>
+          <li><a href="index.html#volunteer">Volunteer</a></li>
+          <li><a href="index.html#beyond">Beyond</a></li>
+          <li class="nav-links-mobile-only"><a href="index.html#resume">Resume ↗</a></li>
+          <li class="nav-links-mobile-only"><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="nav-cta">
+          <a href="index.html#resume">Resume ↗</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">
+          <span class="icon-sun" aria-hidden="true">☀</span>
+          <span class="icon-moon" aria-hidden="true">☾</span>
+        </button>
+        <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <a href="index.html#projects" class="back-link">← Back to Projects</a>
+      <p class="eyebrow">Machine Learning</p>
+      <h1>Predictive Risk Analytics with Logistic Regression</h1>
+      <div class="tag-row">
+        <span class="tag">Python</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">Scikit-Learn</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+  <section class="section">
+    <div class="container">
+
+      <div class="detail-block reveal">
+        <h2>Problem</h2>
+        <p>
+          I wanted to build an end-to-end predictive analytics pipeline to
+          classify risk — the same underlying approach used in fraud
+          detection and credit-risk analytics, where correctly flagging
+          high-risk cases matters more than raw accuracy alone.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Data Cleaning</h2>
+        <p>
+          Cleaned the raw dataset — handling missing values, removing
+          duplicate records, and standardizing categorical fields — to
+          prepare it for modeling.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Feature Engineering</h2>
+        <p>
+          Engineered features to strengthen the model's ability to
+          separate risk classes, including derived ratios and binned
+          categorical variables built from the cleaned dataset.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Logistic Regression</h2>
+        <p>
+          Used logistic regression as the core classifier — well suited
+          to a binary outcome, and interpretable enough to explain the
+          drivers behind each prediction to non-technical stakeholders.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Model Evaluation</h2>
+        <p>
+          Evaluated the model using standard classification metrics
+          (accuracy, precision, recall, and a confusion matrix) to
+          understand the tradeoff between false positives and false
+          negatives — a critical consideration in risk applications where
+          missing a true positive can be far costlier than a false alarm.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Business Application</h2>
+        <p>
+          This same pipeline structure — data cleaning, feature
+          engineering, logistic regression, and evaluation — applies
+          directly to fraud detection and credit-risk scoring, where
+          flagging a smaller, higher-risk subset for manual review is
+          often more valuable than optimizing for overall accuracy alone.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Lessons Learned</h2>
+        <ul>
+          <li>Accuracy alone was misleading on an imbalanced dataset — precision/recall and the confusion matrix told a much more useful story for a risk use case.</li>
+          <li>Feature engineering had a bigger impact on model quality than switching algorithms did, which reframed how I prioritize time on future projects.</li>
+          <li>Next time, I'd add a cost-sensitive threshold instead of the default 0.5 cutoff, since false negatives and false positives aren't equally costly in risk scoring.</li>
+        </ul>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Technologies</h2>
+        <div class="tag-row">
+          <span class="tag">Python</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Scikit-Learn</span>
+          <span class="tag">Logistic Regression</span>
+        </div>
+        <p style="margin-top: 16px;">
+          <a href="https://github.com/CeciliaGraceLi" class="card-link" target="_blank" rel="noopener">View on GitHub <span class="arrow">→</span></a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Cecilia Li. Built with HTML &amp; CSS while learning.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>

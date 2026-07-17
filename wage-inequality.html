@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wage Inequality Econometric Analysis — Cecilia Li</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="loader" aria-hidden="true"><span class="loader-mark">CL</span></div>
+  <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress-bar"></div></div>
+
+  <nav aria-label="Primary">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo signature">Cecilia Li</a>
+      <div class="nav-center">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#projects" class="active">Projects</a></li>
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="index.html#blog">Blog</a></li>
+          <li><a href="index.html#volunteer">Volunteer</a></li>
+          <li><a href="index.html#beyond">Beyond</a></li>
+          <li class="nav-links-mobile-only"><a href="index.html#resume">Resume ↗</a></li>
+          <li class="nav-links-mobile-only"><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <div class="nav-cta">
+          <a href="index.html#resume">Resume ↗</a>
+          <a href="index.html#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode">
+          <span class="icon-sun" aria-hidden="true">☀</span>
+          <span class="icon-moon" aria-hidden="true">☾</span>
+        </button>
+        <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="container">
+      <a href="index.html#projects" class="back-link">← Back to Projects</a>
+      <p class="eyebrow">Econometrics</p>
+      <h1>Wage Inequality Econometric Analysis</h1>
+      <div class="tag-row">
+        <span class="tag">STATA</span>
+        <span class="tag">Regression Analysis</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+  <section class="section">
+    <div class="container">
+
+      <div class="detail-block reveal">
+        <h2>Problem</h2>
+        <p>
+          Do wage gaps persist between demographic groups once you control
+          for the usual explanations — education, experience, and
+          industry? I wanted to test how much of the observed wage gap is
+          explained by these factors, and how much remains unexplained.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Dataset</h2>
+        <p>
+          75K+ labor-market observations, including hourly and annual
+          wage, education level, years of experience, industry, and
+          demographic variables.
+        </p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Methodology</h2>
+        <p>
+          I used multivariate OLS (ordinary least squares) regression in
+          STATA, with wage as the dependent variable and education,
+          experience, and industry as controls, to isolate the portion of
+          the wage gap not explained by these factors.
+        </p>
+        <ul>
+          <li>Cleaned and prepared the dataset, handling missing values and outliers</li>
+          <li>Checked for multicollinearity between predictor variables</li>
+          <li>Ran multivariate OLS regression with robust standard errors</li>
+          <li>Validated model assumptions (linearity, homoscedasticity, normality of residuals)</li>
+        </ul>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Key Findings</h2>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="value">75K+</div>
+            <div class="label">Observations analyzed</div>
+          </div>
+          <div class="stat">
+            <div class="value">12 pg</div>
+            <div class="label">Research paper</div>
+          </div>
+        </div>
+        <p style="margin-top: 20px;">
+          The regression identified statistically significant wage
+          differentials across demographic groups even after controlling
+          for education, experience, and industry — suggesting factors
+          beyond these standard controls contribute to the wage gap.
+        </p>
+
+        <!-- Illustrative visualization — built with plain CSS (no chart
+             library), since the exact coefficients aren't published here.
+             Swap the widths below for your real regression output. -->
+        <div class="bar-chart">
+          <div class="bar-chart-row">
+            <span>Raw wage gap</span>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width: 100%;"></div></div>
+            <span>100%</span>
+          </div>
+          <div class="bar-chart-row">
+            <span>After controls</span>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width: 58%;"></div></div>
+            <span>58%</span>
+          </div>
+          <div class="bar-chart-row">
+            <span>Unexplained residual</span>
+            <div class="bar-chart-track"><div class="bar-chart-fill" style="width: 58%;"></div></div>
+            <span>58%</span>
+          </div>
+        </div>
+        <p class="chart-caption">Illustrative — replace with your actual coefficient breakdown from the paper.</p>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Lessons Learned &amp; What I'd Improve</h2>
+        <ul>
+          <li>Cross-sectional data can only show correlation at a point in time — I'd incorporate panel data to track the same individuals over time and get closer to a causal estimate.</li>
+          <li>Robust standard errors mattered more than I expected once I checked for heteroscedasticity — a reminder to validate assumptions before trusting p-values.</li>
+          <li>Next time, I'd test interaction effects between education and industry rather than treating them as independent controls.</li>
+        </ul>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="detail-block reveal">
+        <h2>Technologies</h2>
+        <div class="tag-row">
+          <span class="tag">STATA</span>
+          <span class="tag">OLS Regression</span>
+          <span class="tag">Statistical Analysis</span>
+        </div>
+        <p style="margin-top: 16px;">
+          <a href="https://github.com/CeciliaGraceLi" class="card-link" target="_blank" rel="noopener">View on GitHub <span class="arrow">→</span></a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Cecilia Li. Built with HTML &amp; CSS while learning.</p>
+    </div>
+  </footer>
+
+  <script src="site.js"></script>
+</body>
+</html>
